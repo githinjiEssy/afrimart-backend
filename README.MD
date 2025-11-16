@@ -136,7 +136,7 @@ Before you begin, ensure you have the following installed:
    # Database Configuration
    MONGODB_URI=mongodb://localhost:27017/afrimart
    # For MongoDB Atlas:
-   # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/afrimart
+   # MONGODB_URI=mongodb+srv://<YOUR_USERNAME:PASSWORD>.mongodb.net/<DB_NAME>
 
    ```
 
