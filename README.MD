@@ -111,7 +111,6 @@ Before you begin, ensure you have the following installed:
    This will install all required packages listed in `package.json`:
    - express
    - mongoose
-   - jsonwebtoken
    - bcryptjs
    - express-validator
    - cors
@@ -131,12 +130,11 @@ Before you begin, ensure you have the following installed:
    ```env
    # Server Configuration
    PORT=5000
-   NODE_ENV=development
 
    # Database Configuration
-   MONGODB_URI=mongodb://localhost:27017/afrimart
+   MONGODB_URI=mongodb://localhost:27017/<DB_NAME>
    # For MongoDB Atlas:
-   # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/afrimart
+   # MONGODB_URI=mongodb+srv://<YOUR_USERNAME:PASSWORD>.mongodb.net/<DB_NAME>
 
    ```
 
@@ -299,12 +297,4 @@ CORS_ORIGIN=http://localhost:5173,http://localhost:3000
 2. Commit your changes: `git commit -m 'Add your feature'`
 3. Push to the branch: `git push origin feature/your-feature`
 4. Open a Pull Request
-
-## Support
-
-For issues or questions, please open an issue in the repository or contact the development team.
-
----
-
-**Made with ❤️ by the Afrimart Development Team**
 
