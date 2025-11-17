@@ -5,110 +5,110 @@ import path from "path";
 import fs from "fs";
 
 // Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadDir = 'uploads/';
-    // Create uploads directory if it doesn't exist
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    console.log('📁 Multer saving file to:', uploadDir);
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    // Generate unique filename with timestamp and original extension
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const filename = 'profile-' + uniqueSuffix + path.extname(file.originalname);
-    console.log('📄 Multer filename:', filename);
-    cb(null, filename);
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     const uploadDir = 'uploads/';
+//     // Create uploads directory if it doesn't exist
+//     if (!fs.existsSync(uploadDir)) {
+//       fs.mkdirSync(uploadDir, { recursive: true });
+//     }
+//     console.log('📁 Multer saving file to:', uploadDir);
+//     cb(null, uploadDir);
+//   },
+//   filename: function (req, file, cb) {
+//     // Generate unique filename with timestamp and original extension
+//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+//     const filename = 'profile-' + uniqueSuffix + path.extname(file.originalname);
+//     console.log('📄 Multer filename:', filename);
+//     cb(null, filename);
+//   }
+// });
 
 // File filter for images only
-const fileFilter = (req, file, cb) => {
-  console.log('🔍 File filter checking:', {
-    originalname: file.originalname,
-    mimetype: file.mimetype,
-    size: file.size
-  });
+// const fileFilter = (req, file, cb) => {
+//   console.log('🔍 File filter checking:', {
+//     originalname: file.originalname,
+//     mimetype: file.mimetype,
+//     size: file.size
+//   });
   
-  if (file.mimetype.startsWith('image/')) {
-    console.log('✅ File accepted');
-    cb(null, true);
-  } else {
-    console.log('❌ File rejected - not an image');
-    cb(new Error('Only image files are allowed!'), false);
-  }
-};
+//   if (file.mimetype.startsWith('image/')) {
+//     console.log('✅ File accepted');
+//     cb(null, true);
+//   } else {
+//     console.log('❌ File rejected - not an image');
+//     cb(new Error('Only image files are allowed!'), false);
+//   }
+// };
 
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB limit
-  }
-});
+// const upload = multer({
+//   storage: storage,
+//   fileFilter: fileFilter,
+//   limits: {
+//     fileSize: 5 * 1024 * 1024 // 5MB limit
+//   }
+// });
 
 /* ---------------------------------------------
    UPLOAD PROFILE IMAGE
 --------------------------------------------- */
-export const uploadProfileImage = async (req, res) => {
-  console.log('🚀 uploadProfileImage called with:', {
-    params: req.params,
-    file: req.file ? {
-      originalname: req.file.originalname,
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      filename: req.file.filename
-    } : 'No file',
-    body: req.body
-  });
+// export const uploadProfileImage = async (req, res) => {
+//   console.log('🚀 uploadProfileImage called with:', {
+//     params: req.params,
+//     file: req.file ? {
+//       originalname: req.file.originalname,
+//       mimetype: req.file.mimetype,
+//       size: req.file.size,
+//       filename: req.file.filename
+//     } : 'No file',
+//     body: req.body
+//   });
 
-  try {
-    const userId = req.params.id;
-    console.log('👤 Looking for user with ID:', userId);
+//   try {
+//     const userId = req.params.id;
+//     console.log('👤 Looking for user with ID:', userId);
     
-    // Check if user exists
-    const user = await User.findById(userId);
-    if (!user) {
-      console.log('❌ User not found:', userId);
-      return res.status(404).json({ message: "User not found" });
-    }
-    console.log('✅ User found:', user.email);
+//     // Check if user exists
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       console.log('❌ User not found:', userId);
+//       return res.status(404).json({ message: "User not found" });
+//     }
+//     console.log('✅ User found:', user.email);
 
-    // Check if file was uploaded
-    if (!req.file) {
-      console.log('❌ No file uploaded');
-      return res.status(400).json({ message: "No image file provided" });
-    }
+//     // Check if file was uploaded
+//     if (!req.file) {
+//       console.log('❌ No file uploaded');
+//       return res.status(400).json({ message: "No image file provided" });
+//     }
 
-    // Generate the image URL (adjust based on your server setup)
-    const imageUrl = `/uploads/${req.file.filename}`;
-    console.log('🖼️ Generated image URL:', imageUrl);
+//     // Generate the image URL (adjust based on your server setup)
+//     const imageUrl = `/uploads/${req.file.filename}`;
+//     console.log('🖼️ Generated image URL:', imageUrl);
 
-    // Update user's profile image
-    console.log('💾 Updating user profile image...');
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profile_img: imageUrl },
-      { new: true }
-    ).select("-password");
+//     // Update user's profile image
+//     console.log('💾 Updating user profile image...');
+//     const updatedUser = await User.findByIdAndUpdate(
+//       userId,
+//       { profile_img: imageUrl },
+//       { new: true }
+//     ).select("-password");
 
-    console.log('✅ User updated successfully:', {
-      userId: updatedUser._id,
-      newImage: updatedUser.profile_img
-    });
+//     console.log('✅ User updated successfully:', {
+//       userId: updatedUser._id,
+//       newImage: updatedUser.profile_img
+//     });
 
-    res.json({
-      message: "Profile image uploaded successfully",
-      profile_img: imageUrl,
-      user: updatedUser
-    });
-  } catch (err) {
-    console.error('❌ Image upload error:', err);
-    res.status(400).json({ message: err.message });
-  }
-};
+//     res.json({
+//       message: "Profile image uploaded successfully",
+//       profile_img: imageUrl,
+//       user: updatedUser
+//     });
+//   } catch (err) {
+//     console.error('❌ Image upload error:', err);
+//     res.status(400).json({ message: err.message });
+//   }
+// };
 
 /* ---------------------------------------------
    REMOVE PROFILE IMAGE

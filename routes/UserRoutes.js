@@ -22,7 +22,7 @@ router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 
 // Image routes
-router.post("/:id/upload-image", upload.single('profile_img'), uploadProfileImage);
-router.put("/:id/remove-image", removeProfileImage);
+// router.post("/:id/upload-image", upload.single('profile_img'), uploadProfileImage);
+// router.put("/:id/remove-image", removeProfileImage);
 
 export default router;
