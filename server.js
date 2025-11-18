@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import { fileURLToPath } from 'url';
+// import { fileURLToPath } from 'url';
 import path from "path";
 
 // Load environment variables
@@ -13,13 +13,14 @@ import ProductRoutes from "./routes/ProductRoutes.js";
 import AddressRoutes from "./routes/AddressRoutes.js";
 import PaymentMethodRoutes from "./routes/PaymentMethodRoutes.js";
 import OrderRoutes from "./routes/OrderRoutes.js";
+import AdminRoutes from "./routes/AdminRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 
 //MongoDB connection
@@ -52,9 +53,10 @@ app.use("/products", ProductRoutes);
 app.use("/addresses", AddressRoutes);
 app.use("/payment-methods", PaymentMethodRoutes);
 app.use("/orders", OrderRoutes);
+app.use("/admin", AdminRoutes);
 
 // Serve static files from uploads directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Basic route
 app.get("/", (req, res) => {
