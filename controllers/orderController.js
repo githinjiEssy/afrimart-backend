@@ -29,6 +29,28 @@ export const getOrder = async (req, res) => {
   }
 };
 
+// Get orders for specific user by user ID
+export const getUserOrders = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Get user ID from URL parameter
+    
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+    
+    const orders = await Order.find({ user: userId })
+      .populate("user", "firstname lastname email")
+      .populate("items.product", "name product_image_url")
+      .populate("shipping_address")
+      .populate("payment_details")
+      .sort({ createdAt: -1 });
+    
+    res.json(orders);
+  } catch (err) {
+    console.error('Error fetching user orders:', err);
+    res.status(500).json({ message: err.message });
+  }
+};
 
 //create order
 export const createOrder = async (req, res) => {
